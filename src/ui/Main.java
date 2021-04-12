@@ -3,6 +3,8 @@ package ui;
 
 import java.util.Scanner;
 
+import model.GameTable;
+
 public class Main {
 
     private Scanner sc;
@@ -35,7 +37,9 @@ public class Main {
     private void executeOperation(int option) {
         switch (option) {
         case 1:
-        System.out.println("Play game");
+            GameTable game=new GameTable(5, 5);
+            System.out.println(game);
+            System.out.println(game.toString2());
             break;
         case 2:
             System.out.println("Scores");
