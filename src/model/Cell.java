@@ -17,7 +17,7 @@ public class Cell {
 	public Cell (String el,int row, int col) {
 		this.row=row;
 		this.col=col;
-		val = (row+1)*(col+1);
+		val = 0;
 		elements = el;
 	}
 
@@ -87,7 +87,8 @@ public class Cell {
 	}
 
 	public String toString(){
-		return ("("+row+","+col+")");
+		//return ("("+row+","+col+")");
+		return "("+val+")'";
 	}
 
 

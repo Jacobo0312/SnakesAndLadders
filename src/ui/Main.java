@@ -19,11 +19,7 @@ public class Main {
 
         int option = 0;
 
-        do {
-            option = game.showMenu();
-            game.executeOperation(option);
-
-        } while (option != 3);
+        whileRecursive(game,option);
 
     }
 
@@ -41,7 +37,7 @@ public class Main {
             System.out.println(game);
 
             //For check vertical link
-            System.out.println(game.toString2());
+            //System.out.println(game.toString2());
 
             break;
         case 2:
@@ -50,6 +46,16 @@ public class Main {
 
         default:
             break;
+        }
+
+    }
+
+    private static void whileRecursive(Main game,int option){
+
+        if (option!=3){
+            option = game.showMenu();
+            game.executeOperation(option);
+            whileRecursive(game, option);
         }
 
     }
