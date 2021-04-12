@@ -103,7 +103,7 @@ public class GameTable {
         
         if (cell!=null){
             message=toStringRow2(cell)+"\n";
-            message+=toStringCol2(cell.getNext());
+            message+=toStringCol2(cell.getDown());
         }
         return message;
     }
@@ -115,7 +115,7 @@ public class GameTable {
         
         if (cell!=null){
             message=cell.toString();
-            message+=toStringRow2(cell.getDown());
+            message+=toStringRow2(cell.getNext());
         }
             
         return message;

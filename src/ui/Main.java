@@ -39,7 +39,10 @@ public class Main {
         case 1:
             GameTable game=new GameTable(5, 5);
             System.out.println(game);
+
+            //For check vertical link
             System.out.println(game.toString2());
+
             break;
         case 2:
             System.out.println("Scores");
