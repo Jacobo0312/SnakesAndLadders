@@ -8,6 +8,7 @@ import model.GameTable;
 public class Main {
 
     private Scanner sc;
+    private GameTable gm;
 
     public Main() {
         sc = new Scanner(System.in);
@@ -33,12 +34,17 @@ public class Main {
     private void executeOperation(int option) {
         switch (option) {
         case 1:
-            GameTable game=new GameTable(5, 5);
+            /*GameTable game=new GameTable(5, 5);
             System.out.println(game);
-
             //For check vertical link
-            //System.out.println(game.toString2());
-
+            //System.out.println(game.toString2());*/
+        	System.out.println("S T A R T I N G  N E W  G A M E...\n");
+        	System.out.println("Insert the number of rows:\n");
+        	int rows = Integer.parseInt(sc.nextLine());
+        	System.out.println("Insert the number of columns:\n");
+        	int cols = Integer.parseInt(sc.nextLine());
+        	gm = new GameTable(rows, cols);
+        	System.out.println(gm);
             break;
         case 2:
             System.out.println("Scores");
