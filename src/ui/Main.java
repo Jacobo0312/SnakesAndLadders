@@ -20,7 +20,7 @@ public class Main {
 
         int option = 0;
 
-        whileRecursive(game,option);
+        whileRecursive(game, option);
 
     }
 
@@ -46,9 +46,9 @@ public class Main {
 
     }
 
-    private static void whileRecursive(Main game,int option){
+    private static void whileRecursive(Main game, int option) {
 
-        if (option!=3){
+        if (option != 3) {
             option = game.showMenu();
             game.executeOperation(option);
             whileRecursive(game, option);
@@ -56,8 +56,7 @@ public class Main {
 
     }
 
-
-    private void startGame(){
+    private void startGame() {
         System.out.println("S T A R T I N G  N E W  G A M E...\n");
         System.out.println("Insert the number of rows:\n");
         int rows = Integer.parseInt(sc.nextLine());
@@ -65,11 +64,9 @@ public class Main {
         int cols = Integer.parseInt(sc.nextLine());
         game = new GameTable(rows, cols);
         System.out.println(game);
-        //System.out.println("For check vertical link");
-        //System.out.println(game.toString2());
-        
+        // System.out.println("For check vertical link");
+        // System.out.println(game.toString2());
 
     }
-
 
 }

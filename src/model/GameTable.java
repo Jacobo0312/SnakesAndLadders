@@ -10,7 +10,7 @@ public class GameTable {
     public GameTable(int n, int m) {
         this.rows = n;
         this.cols = m;
-        this.val=(n*m);
+        this.val = (n * m);
         startGame();
         addVal(first);
 
@@ -20,7 +20,7 @@ public class GameTable {
         // int index=n*m;
         // System.out.println("Se crea la matriz");
         first = new Cell("", 0, 0);
-        //System.out.println("Se creo first");
+        // System.out.println("Se creo first");
         createRow(0, 0, first);
 
     }
@@ -117,23 +117,53 @@ public class GameTable {
         return message;
     }
 
-    private void addVal(Cell cell){
+    private void addVal(Cell cell) {
         cell.setVal(val--);
-        //System.out.println(toString());
-        if (val<0){
-            //Finish recursion
-        }
-        else if (cell.getNext() !=null && ((cell.getPrev() ==null  && cell.getNext().getVal()==0) || (cell.getPrev() !=null  && cell.getNext().getVal()==0 ))) {
-            //System.out.println("Entro a next");
+        // System.out.println(toString());
+        if (val < 0) {
+            // Finish recursion
+        } else if (cell.getNext() != null && ((cell.getPrev() == null && cell.getNext().getVal() == 0)
+                || (cell.getPrev() != null && cell.getNext().getVal() == 0))) {
+            // System.out.println("Entro a next");
             addVal(cell.getNext());
-        }else if ( cell.getPrev() !=null &&((cell.getNext() ==null  && cell.getPrev().getVal()==0) || (cell.getPrev().getVal() ==0  && cell.getNext().getVal()!=0))){
-            //System.out.println("Entro a prev");
+        } else if (cell.getPrev() != null && ((cell.getNext() == null && cell.getPrev().getVal() == 0)
+                || (cell.getPrev().getVal() == 0 && cell.getNext().getVal() != 0))) {
+            // System.out.println("Entro a prev");
             addVal(cell.getPrev());
-        }else if (cell.getDown() !=null && ((cell.getNext() ==null  && cell.getPrev().getVal()!=0 && cell.getPrev() !=null ) || (cell.getPrev()==null  && cell.getNext().getVal()!=0))) {
-            //System.out.println("Entro a down");
+        } else if (cell.getDown() != null
+                && ((cell.getNext() == null && cell.getPrev().getVal() != 0 && cell.getPrev() != null)
+                        || (cell.getPrev() == null && cell.getNext().getVal() != 0))) {
+            // System.out.println("Entro a down");
             addVal(cell.getDown());
         }
 
+    }
+
+    // Function for cell search with your value
+
+    public Cell searchCell(int valCell, Cell cell) {
+
+        if (valCell == cell.getVal()) {
+            return cell;
+        } else if (cell.getRow() % 2 == 0) {
+            if (cell.getNext() == null) {
+                return searchCell(valCell, cell.getDown());
+            } else {
+                //System.out.println("Next");
+                return searchCell(valCell, cell.getNext());
+            }
+        } else {
+            if (cell.getPrev() == null) {
+                return searchCell(valCell, cell.getDown());
+            } else {
+                //System.out.println("Prev");
+                return searchCell(valCell, cell.getPrev());
+            }
+        }
+    }
+
+    public Cell getFirst() {
+        return this.first;
     }
 
 }
