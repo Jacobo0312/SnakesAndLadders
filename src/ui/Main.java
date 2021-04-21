@@ -6,7 +6,7 @@ import java.util.Scanner;
 import model.GameTable;
 
 public class Main {
-
+	
     private Scanner sc;
     private GameTable game;
 
@@ -58,11 +58,21 @@ public class Main {
 
     private void startGame() {
         System.out.println("S T A R T I N G  N E W  G A M E...\n");
-        System.out.println("Insert the number of rows:\n");
+        System.out.println("Insert a single string like the next example:\n" +
+        "5 4 2 3 #%*\n" + "In which a matrix 5 x 4 is created with:\n2 snakes, 3 ladders and 3 players, one for each symbol (Max 9 players)");
+        String entry = sc.nextLine();
+        // Excepción de la segunda condición de la TI2 para arreglos.
+        String [] parts = entry.split(" ");
+        int rows = Integer.parseInt(parts[0]);
+        int cols = Integer.parseInt(parts[1]);
+        /*int snakes = Integer.parseInt(parts[2]);
+        int ladders = Integer.parseInt(parts[3]);*/
+        String players = parts[4];
+        /*System.out.println("Insert the number of rows:\n");
         int rows = Integer.parseInt(sc.nextLine());
         System.out.println("Insert the number of columns:\n");
-        int cols = Integer.parseInt(sc.nextLine());
-        game = new GameTable(rows, cols);
+        int cols = Integer.parseInt(sc.nextLine());*/
+        game = new GameTable(rows, cols, players);
         System.out.println(game);
         // System.out.println("For check vertical link");
         // System.out.println(game.toString2());

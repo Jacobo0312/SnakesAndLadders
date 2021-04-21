@@ -88,7 +88,7 @@ public class Cell {
 
 	public String toString(){
 		//return ("("+row+","+col+")");
-		return "("+val+")'";
+		return "("+val+ elements + ")'";
 	}
 
 

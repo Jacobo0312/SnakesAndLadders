@@ -6,20 +6,39 @@ public class GameTable {
     private int rows;
     private int cols;
     private int val;
+    private int numPlayers;
+    
+    // Characters and its getters and setters
 
-    public GameTable(int n, int m) {
+    public GameTable(int n, int m, String players) {
         this.rows = n;
         this.cols = m;
         this.val = (n * m);
-        startGame();
+        numPlayers = players.length();
+        assignPlayers(numPlayers, players);
+        //System.out.println(numPlayers);
+        startGame(players);
         addVal(first);
 
     }
+    
+    public void assignPlayers(int num, String characters) {
+    	if (num == 0) {
+    		System.out.println("Inside default case");
+    		// If it is a default case
+    	} else {    		
+    		Player pl = new Player(characters.substring(0, 1));
+    		System.out.println(pl);
+    		characters = characters.substring(1, num);
+    		assignPlayers(num - 1, characters);
+    	}
+    	
+    }
 
-    public void startGame() {
+    public void startGame(String players) {
         // int index=n*m;
         // System.out.println("Se crea la matriz");
-        first = new Cell("", 0, 0);
+        first = new Cell(players, 0, 0);
         // System.out.println("Se creo first");
         createRow(0, 0, first);
 
@@ -78,7 +97,7 @@ public class GameTable {
         String message = "";
 
         if (cell != null) {
-            message = cell.toString();
+            message = cell.toString()/* + "\t"*/;
             message += toStringCol(cell.getNext());
         }
 
@@ -165,5 +184,4 @@ public class GameTable {
     public Cell getFirst() {
         return this.first;
     }
-
 }

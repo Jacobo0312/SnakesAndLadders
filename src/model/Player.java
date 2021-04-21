@@ -25,4 +25,10 @@ public class Player {
 		this.pos = pos;
 	}
 	
+	@Override
+	public String toString() {
+		String details = "Token: " + token + "\nPos: " + pos;
+		return details;
+	}
+	
 }
