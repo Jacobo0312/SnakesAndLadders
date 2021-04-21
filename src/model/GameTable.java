@@ -8,6 +8,7 @@ public class GameTable {
     private int val;
     private int numPlayers;
     private Player firstPlayer;
+    private PlayerList playerList;
 
     // Characters and its getters and setters
 
@@ -16,30 +17,33 @@ public class GameTable {
         this.cols = m;
         this.val = (n * m);
         this.numPlayers = players.length();
+        playerList = new PlayerList();
         startGame(players);
 
     }
 
-    public void assignPlayers(int num, String characters,Player player) {
+    public void assignPlayers(int num, String characters/*,Player player*/) {
         if (num == 0) {
             //System.out.println("Inside default case");
             // If it is a default case
+        	System.out.println("RESULTADO:\n" + playerList.toString());
         } else {
-            player = new Player(characters.substring(0, 1));
-            System.out.println(player);
-            System.out.println(firstPlayer);
+            Player player = new Player(characters.substring(0, 1));
+            //System.out.println(player);
+            //System.out.println(firstPlayer);
+            playerList.append(player);
+            //System.out.println(playerList.getHead().getToken() + " Cola: " + playerList.getTail().getToken());
             //System.out.println(pl);
             characters = characters.substring(1, num);
-            assignPlayers(num - 1, characters,player.getNextPlayer());
+            assignPlayers(num - 1, characters/*,player.getNextPlayer()*/);
         }
-
     }
 
     public void startGame(String players) {
         first = new Cell(0, 0);
         // System.out.println("Se creo first");
         createRow(0, 0, first);
-        assignPlayers(numPlayers, players,firstPlayer);
+        assignPlayers(numPlayers, players/*,firstPlayer*/);
         // System.out.println(numPlayers);
         addVal(first);
         setupGame(players);
@@ -204,13 +208,13 @@ public class GameTable {
 
     // Add snakes and ladders
 
-    private void addSnake() {
+    public void addSnake() { // Should be private
 
     }
 
     public void addLadder(String letter) {
 
-        // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
+        // Math.floor(Math.random()*(N-M+1)+M); // Value between M1 and N include both
         int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
         int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
 

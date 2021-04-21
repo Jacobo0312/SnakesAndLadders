@@ -4,6 +4,7 @@ public class Snake {
 	private char letter;
 	private int initPos;
 	private int endPos;
+	// Asegurarse de que initPos siempre es mayor a endPos;
 	
 	public Snake(char l, int i, int e) {
 		letter = l;

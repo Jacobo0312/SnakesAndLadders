@@ -72,8 +72,7 @@ public class Main {
 
         //For add letter of the snakes 
         //System.out.println((char) ('A'+1));
-
-        System.out.println(game.getFirstPlayer());
+        //System.out.println(game.getFirstPlayer());
     }
 
 }

@@ -4,6 +4,7 @@ public class Ladder {
 	private int number;
 	private int initPos;
 	private int endPos;
+	// Asegurarse de que initPos siempre es menor a endPos;
 	
 	public Ladder(int n, int i, int e) {
 		number = n;
