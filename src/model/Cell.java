@@ -14,11 +14,11 @@ public class Cell {
 	private Cell down;
 
 	
-	public Cell (String el,int row, int col) {
+	public Cell (int row, int col) {
 		this.row=row;
 		this.col=col;
 		val = 0;
-		elements = el;
+		elements = "";
 	}
 
 	public int getVal() {

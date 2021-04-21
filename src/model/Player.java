@@ -3,6 +3,8 @@ package model;
 public class Player {
 	private String token;
 	private int pos;
+
+	private Player nextPlayer;
 	
 	public Player(String t) {
 		token = t;
@@ -24,6 +26,16 @@ public class Player {
 	public void setPos(int pos) {
 		this.pos = pos;
 	}
+
+
+	public Player getNextPlayer() {
+		return this.nextPlayer;
+	}
+
+	public void setNextPlayer(Player nextPlayer) {
+		this.nextPlayer = nextPlayer;
+	}
+
 	
 	@Override
 	public String toString() {

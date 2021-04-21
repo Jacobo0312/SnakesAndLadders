@@ -7,48 +7,55 @@ public class GameTable {
     private int cols;
     private int val;
     private int numPlayers;
-    
+    private Player firstPlayer;
+
     // Characters and its getters and setters
 
     public GameTable(int n, int m, String players) {
         this.rows = n;
         this.cols = m;
         this.val = (n * m);
-        numPlayers = players.length();
-        assignPlayers(numPlayers, players);
-        //System.out.println(numPlayers);
+        this.numPlayers = players.length();
         startGame(players);
-        addVal(first);
 
     }
-    
-    public void assignPlayers(int num, String characters) {
-    	if (num == 0) {
-    		System.out.println("Inside default case");
-    		// If it is a default case
-    	} else {    		
-    		Player pl = new Player(characters.substring(0, 1));
-    		System.out.println(pl);
-    		characters = characters.substring(1, num);
-    		assignPlayers(num - 1, characters);
-    	}
-    	
+
+    public void assignPlayers(int num, String characters,Player player) {
+        if (num == 0) {
+            //System.out.println("Inside default case");
+            // If it is a default case
+        } else {
+            player = new Player(characters.substring(0, 1));
+            System.out.println(player);
+            System.out.println(firstPlayer);
+            //System.out.println(pl);
+            characters = characters.substring(1, num);
+            assignPlayers(num - 1, characters,player.getNextPlayer());
+        }
+
     }
 
     public void startGame(String players) {
-        // int index=n*m;
-        // System.out.println("Se crea la matriz");
-        first = new Cell(players, 0, 0);
+        first = new Cell(0, 0);
         // System.out.println("Se creo first");
         createRow(0, 0, first);
+        assignPlayers(numPlayers, players,firstPlayer);
+        // System.out.println(numPlayers);
+        addVal(first);
+        setupGame(players);
 
+    }
+
+    private void setupGame(String players){
+        Cell cell1=searchCell(1, first);
+        cell1.setElements(players);
     }
 
     private void createRow(int i, int j, Cell cell) {
         // System.out.println("Create row con la fila: "+i);
         createCol(i, j + 1, cell, cell.getUp());
         if (i + 1 < rows) {
-            Cell current = new Cell("", i + 1, j);
+            Cell current = new Cell(i + 1, j);
             current.setUp(cell);
             cell.setDown(current);
             createRow(i + 1, j, current);
@@ -58,7 +65,7 @@ public class GameTable {
     private void createCol(int i, int j, Cell cell, Cell prevRow) {
         if (j < cols) {
             // System.out.println("En create col con la columna: "+j);
-            Cell current = new Cell("", i, j);
+            Cell current = new Cell(i, j);
             current.setPrev(cell);
             cell.setNext(current);
 
@@ -97,12 +104,14 @@ public class GameTable {
         String message = "";
 
         if (cell != null) {
-            message = cell.toString()/* + "\t"*/;
+            message = cell.toString()/* + "\t" */;
             message += toStringCol(cell.getNext());
         }
 
         return message;
     }
+
+    //-----------------------------------------
 
     // Verify vertical link
     public String toString2() {
@@ -136,6 +145,8 @@ public class GameTable {
         return message;
     }
 
+    //-------------------------------------------------------
+
     private void addVal(Cell cell) {
         cell.setVal(val--);
         // System.out.println(toString());
@@ -168,20 +179,58 @@ public class GameTable {
             if (cell.getNext() == null) {
                 return searchCell(valCell, cell.getDown());
             } else {
-                //System.out.println("Next");
+                // System.out.println("Next");
                 return searchCell(valCell, cell.getNext());
             }
         } else {
             if (cell.getPrev() == null) {
                 return searchCell(valCell, cell.getDown());
             } else {
-                //System.out.println("Prev");
+                // System.out.println("Prev");
                 return searchCell(valCell, cell.getPrev());
             }
         }
     }
 
+    // Function used to do test
     public Cell getFirst() {
         return this.first;
     }
+
+        public Player getFirstPlayer() {
+        return this.firstPlayer;
+    }
+    // ---------------------
+
+    // Add snakes and ladders
+
+    private void addSnake() {
+
+    }
+
+    public void addLadder(String letter) {
+
+        // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
+        int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
+        int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
+
+        Cell cell = searchCell(init, first);
+        cell.setElements(letter);
+        cell = searchCell(end, first);
+        cell.setElements(letter);
+
+    }
+
+
+
+
+    // Roll dices
+
+    public int rollDices() {
+        int dice1 = (int) (Math.random() * 6 + 1);
+        int dice2 = (int) (Math.random() * 6 + 1);
+
+        return dice1 + dice2;
+    }
+
 }
