@@ -3,6 +3,7 @@ package model;
 public class Player {
 	private String token;
 	private int pos;
+	private int moves;
 
 	private Player nextPlayer;
 	
@@ -42,5 +43,15 @@ public class Player {
 		String details = "Token: " + token + "\nPos: " + pos;
 		return details;
 	}
+
+
+	public int getMoves() {
+		return this.moves;
+	}
+
+	public void setMoves(int moves) {
+		this.moves = moves;
+	}
+
 	
 }

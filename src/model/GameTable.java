@@ -7,7 +7,7 @@ public class GameTable {
     private int cols;
     private int val;
     private int numPlayers;
-    private Player firstPlayer;
+    private Player turn;
     private PlayerList playerList;
 
     // Characters and its getters and setters
@@ -19,6 +19,34 @@ public class GameTable {
         this.numPlayers = players.length();
         playerList = new PlayerList();
         startGame(players);
+
+    }
+
+    public String move(){
+        int dices=rollDices();
+        int turnPos=turn.getPos();
+        Cell actualCell=searchCell(turnPos, first);
+
+
+        
+        String token=turn.getToken();
+
+        String cellElements = actualCell.getElements();
+        int index = cellElements.indexOf(token);
+        cellElements=cellElements.substring(0, index) + cellElements.substring(index + 1, cellElements.length());
+        actualCell.setElements(cellElements);
+
+        int newPos=dices+turnPos;
+        turn.setPos(newPos);
+        if (newPos>val){
+            return "Dices "+dices+" Player "+token+ "WIN";
+        }else{
+            Cell moveCell=searchCell(newPos, first);
+            moveCell.setElements(moveCell.getElements()+token);
+    
+            turn=turn.getNextPlayer();
+            return "Dices "+dices+" Player "+token;
+        }
 
     }
 
@@ -46,6 +74,7 @@ public class GameTable {
         assignPlayers(numPlayers, players/*,firstPlayer*/);
         // System.out.println(numPlayers);
         addVal(first);
+        val=rows*cols;
         setupGame(players);
 
     }
@@ -53,6 +82,7 @@ public class GameTable {
     private void setupGame(String players){
         Cell cell1=searchCell(1, first);
         cell1.setElements(players);
+        turn=getPlayerList().getHead();
     }
 
     private void createRow(int i, int j, Cell cell) {
@@ -201,8 +231,8 @@ public class GameTable {
         return this.first;
     }
 
-        public Player getFirstPlayer() {
-        return this.firstPlayer;
+    public PlayerList getPlayerList() {
+        return this.playerList;
     }
     // ---------------------
 
@@ -217,7 +247,7 @@ public class GameTable {
         // Math.floor(Math.random()*(N-M+1)+M); // Value between M1 and N include both
         int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
         int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
-
+        //Cambiar rows por cols =val
         Cell cell = searchCell(init, first);
         cell.setElements(letter);
         cell = searchCell(end, first);
@@ -232,9 +262,9 @@ public class GameTable {
 
     public int rollDices() {
         int dice1 = (int) (Math.random() * 6 + 1);
-        int dice2 = (int) (Math.random() * 6 + 1);
+        //int dice2 = (int) (Math.random() * 6 + 1);
 
-        return dice1 + dice2;
+        return dice1;
     }
 
 }
