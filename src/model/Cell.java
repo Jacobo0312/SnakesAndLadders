@@ -3,7 +3,6 @@ package model;
 public class Cell {
 	private int val; // Valor o numero que va a tener la celda
 	private String players;
-	private String elements;
 
 	public String getPlayers() {
 		return players;
@@ -21,14 +20,17 @@ public class Cell {
 	private Cell next;
 	private Cell up;
 	private Cell down;
+	private Snake snake;
+	private Ladder ladder;
 
 	
 	public Cell (int row, int col) {
 		this.row=row;
 		this.col=col;
 		val = 0;
-		elements = "";
 		players = "";
+		snake=null;
+		ladder=null;
 	}
 
 	public int getVal() {
@@ -39,13 +41,6 @@ public class Cell {
 		this.val = val;
 	}
 
-	public String getElements() {
-		return elements;
-	}
-
-	public void setElements(String elements) {
-		this.elements = elements;
-	}
 	
 
 	public int getRow() {
@@ -96,9 +91,42 @@ public class Cell {
 		this.down = down;
 	}
 
+
+	public Snake getSnake() {
+		return this.snake;
+	}
+
+	public void setSnake(Snake snake) {
+		this.snake = snake;
+	}
+
+	public Ladder getLadder() {
+		return this.ladder;
+	}
+
+	public void setLadder(Ladder ladder) {
+		this.ladder = ladder;
+	}
+
+	public Boolean hasElement(){
+		Boolean hasElement=false;
+		if (snake!=null || ladder!=null){
+			hasElement=true;
+		}
+		return hasElement;
+	}
+	
+
 	public String toString(){
+
+		String element="";
+		if (snake!=null){
+			element=snake.toString();
+		}else if (ladder!=null){
+			element=ladder.toString();
+		}
 		//return ("("+row+","+col+")");
-		return "("+val+ players + ")'";
+		return "("+val+ players +"  "+element+")'";
 	}
 
 

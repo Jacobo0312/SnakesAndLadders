@@ -64,20 +64,27 @@ public class Main {
         String [] parts = entry.split(" ");
         int rows = Integer.parseInt(parts[0]);
         int cols = Integer.parseInt(parts[1]);
-        /*int snakes = Integer.parseInt(parts[2]);
-        int ladders = Integer.parseInt(parts[3]);*/
+        int snakes = Integer.parseInt(parts[2]);
+        int ladders = Integer.parseInt(parts[3]);
         String players = parts[4];
-        game = new GameTable(rows, cols, players);
+        System.out.println("ladders: "+ladders);
+        game = new GameTable(rows, cols, players,ladders,snakes);
         System.out.println(game);
 
-        //For add letter of the snakes 
-        //System.out.println((char) ('A'+1));
-
+        /*
+        Simulador
         while (!game.isPlayerWon()) {
             System.out.println(game.move());
             System.out.println(game);
         }
-      
+        */
+
+        String line=sc.nextLine();
+         while (!game.isPlayerWon()) {
+             line=sc.nextLine();
+            System.out.println(game.move());
+            System.out.println(game);
+        }
 
         
     }

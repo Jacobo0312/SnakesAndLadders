@@ -6,12 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
 public class GameTable {
 
     private Cell first;
     private int rows;
     private int cols;
     private int val;
+    private int ladders;
+    private int snakes;
     private int numPlayers;
     private Player turn;
     private PlayerList playerList;
@@ -19,103 +22,128 @@ public class GameTable {
 
     // Characters and its getters and setters
 
-    public GameTable(int n, int m, String players) {
+    public GameTable(int n, int m, String players, int ladders, int snakes) {
         this.rows = n;
         this.cols = m;
         this.val = (n * m);
         this.numPlayers = players.length();
         playerList = new PlayerList();
         playerWon = false;
+        this.ladders = ladders;
+        this.snakes = snakes;
         startGame(players);
 
     }
 
-    public String move(){
-        int dices=rollDices();
-        int turnPos=turn.getPos();
-        Cell actualCell=searchCell(turnPos, first);
+    public String move() {
+        int dices = rollDices();
+        int turnPos = turn.getPos();
+        Cell actualCell = searchCell(turnPos, first);
 
-
-        String token=turn.getToken();
+        String token = turn.getToken();
 
         String cellElements = actualCell.getPlayers();
-        /*int index = cellElements.indexOf(token);*/
-        // Revisar este método Substring
+        /* int index = cellElements.indexOf(token); */
+        // Revisar este mï¿½todo Substring
         StringBuilder test = new StringBuilder(cellElements);
-        /*System.out.println("STRING ANTES: " + test);*/
+        /* System.out.println("STRING ANTES: " + test); */
         int indexTwo = test.indexOf(token);
         if (indexTwo >= 0) {
-        	test = test.deleteCharAt(indexTwo);
-        	/*System.out.println("\nSTRING DESPUES: " + test);*/
+            test = test.deleteCharAt(indexTwo);
+            /* System.out.println("\nSTRING DESPUES: " + test); */
         }
-        /*cellElements = cellElements.substring(0, index) + cellElements.substring(index + 1, cellElements.length());*/
+        /*
+         * cellElements = cellElements.substring(0, index) +
+         * cellElements.substring(index + 1, cellElements.length());
+         */
         actualCell.setPlayers(test.toString());
 
-        int newPos=dices+turnPos;
+        int newPos = dices + turnPos;
         turn.setMoves(turn.getMoves() + 1);
         turn.setPos(newPos);
-        if (newPos>=val){
-        	playerWon = true;
-        	// Esto esta hardcodeado, pero es para que tenga el token del ganador
-        	Cell finalCell = searchCell(val, first);
-        	finalCell.setPlayers(turn.getToken());
-        	turn.setScore(turn.getMoves() * val);
-        	try {
-				saveWinners(turn, "Nicknamehere");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-            return "Dices " + dices + " Player " + token +" Moves: " + turn.getMoves() + "Score: " + turn.getScore() + " WIN";
+        if (newPos >= val) { // Creo que deberia ser mayor,no igual
+            playerWon = true;
+            // Esto esta hardcodeado, pero es para que tenga el token del ganador
+            Cell finalCell = searchCell(val, first);
+            finalCell.setPlayers(turn.getToken());
+            turn.setScore(turn.getMoves() * val);
+            try {
+                saveWinners(turn, "Nicknamehere");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + "Score: " + turn.getScore()
+                    + " WIN";
         } else{
-            Cell moveCell=searchCell(newPos, first);
-            moveCell.setPlayers(moveCell.getPlayers()+token);
-    
-            turn=turn.getNextPlayer();
-            return "Dices "+dices+" Player "+token;
+            Cell moveCell = searchCell(newPos, first);
+
+            if (moveCell.hasElement()){
+                
+                int position=moveElement(moveCell);
+                moveCell=searchCell(position, first);  
+            }
+            moveCell.setPlayers(moveCell.getPlayers() + token);
+            turn = turn.getNextPlayer();
+            return "Dices " + dices + " Player " + token;
         }
     }
-    
-    public void saveWinners(Player winner, String nickName) throws FileNotFoundException {
-    	PrintWriter pw = new PrintWriter("./data/winners.csv");
-    	pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Score: " + winner.getScore() +  ", Token: " + winner.getToken());
-    	pw.close();
-    }
-    
-    public String returnScores() {
-    	String scores = "";
-    	try {
-    		BufferedReader br = new BufferedReader(new FileReader("./data/winners.csv"));
-			scores = returnScores(br.readLine(), br);
-		} catch (IOException e) {
-			scores = "NO SCORES!";
-			//e.printStackTrace();
-		}
-    	return scores;
-    }
-    
-    private String returnScores(String line, BufferedReader br) throws IOException {
-    	String ln = line;
-    	if (ln == null) {
-    		return ""; 
-    	} else {
-    		return ln + returnScores(br.readLine(), br);
-    	}
+
+    private int moveElement(Cell cell){
+        int position;
+
+
+        if (cell.getLadder()!=null){
+            position=cell.getLadder().getEndPos();
+        }else{
+            position=cell.getSnake().getInitPos();
+        }
+
+        return position;
     }
 
-    public void assignPlayers(int num, String characters/*,Player player*/) {
+    public void saveWinners(Player winner, String nickName) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter("./data/winners.csv");
+        pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Score: " + winner.getScore()
+                + ", Token: " + winner.getToken());
+        pw.close();
+    }
+
+    public String returnScores() {
+        String scores = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("./data/winners.csv"));
+            scores = returnScores(br.readLine(), br);
+        } catch (IOException e) {
+            scores = "NO SCORES!";
+            // e.printStackTrace();
+        }
+        return scores;
+    }
+
+    private String returnScores(String line, BufferedReader br) throws IOException {
+        String ln = line;
+        if (ln == null) {
+            return "";
+        } else {
+            return ln + returnScores(br.readLine(), br);
+        }
+    }
+
+    public void assignPlayers(int num, String characters/* ,Player player */) {
         if (num == 0) {
-            //System.out.println("Inside default case");
+            // System.out.println("Inside default case");
             // If it is a default case
-        	System.out.println("RESULTADO:\n" + playerList.toString());
+            System.out.println("RESULTADO:\n" + playerList.toString());
         } else {
             Player player = new Player(characters.substring(0, 1));
-            //System.out.println(player);
-            //System.out.println(firstPlayer);
+            // System.out.println(player);
+            // System.out.println(firstPlayer);
             playerList.append(player);
-            //System.out.println(playerList.getHead().getToken() + " Cola: " + playerList.getTail().getToken());
-            //System.out.println(pl);
+            // System.out.println(playerList.getHead().getToken() + " Cola: " +
+            // playerList.getTail().getToken());
+            // System.out.println(pl);
             characters = characters.substring(1, num);
-            assignPlayers(num - 1, characters/*,player.getNextPlayer()*/);
+            assignPlayers(num - 1, characters/* ,player.getNextPlayer() */);
         }
     }
 
@@ -123,18 +151,32 @@ public class GameTable {
         first = new Cell(0, 0);
         // System.out.println("Se creo first");
         createRow(0, 0, first);
-        assignPlayers(numPlayers, players/*,firstPlayer*/);
+        assignPlayers(numPlayers, players/* ,firstPlayer */);
         // System.out.println(numPlayers);
-        addVal(first);
-        val=rows*cols;
+
+        Cell firstCell = firstCell(first);
+        addVal(firstCell, 1);
+        // val = rows * cols;
         setupGame(players);
 
     }
 
-    private void setupGame(String players){
-        Cell cell1=searchCell(1, first);
+    // Return first cell (ROWS,0)
+    private Cell firstCell(Cell cell) {
+        if (cell.getDown() != null) {
+            return firstCell(cell.getDown());
+        } else {
+            return cell;
+        }
+    }
+
+    private void setupGame(String players) {
+        Cell cell1 = searchCell(1, first);
         cell1.setPlayers(players);
-        turn=getPlayerList().getHead();
+        turn = getPlayerList().getHead();
+
+        addLadders(0);
+        addSnakes(1);
     }
 
     private void createRow(int i, int j, Cell cell) {
@@ -197,7 +239,7 @@ public class GameTable {
         return message;
     }
 
-    //-----------------------------------------
+    // -----------------------------------------
 
     // Verify vertical link
     public String toString2() {
@@ -231,26 +273,27 @@ public class GameTable {
         return message;
     }
 
-    //-------------------------------------------------------
+    // -------------------------------------------------------
 
-    private void addVal(Cell cell) {
-        cell.setVal(val--);
+    private void addVal(Cell cell, int valCell) {
+        // System.out.println(cell.getRow()+" "+cell.getCol());
+        cell.setVal(valCell);
         // System.out.println(toString());
-        if (val < 0) {
+        if (valCell >= val) {
             // Finish recursion
         } else if (cell.getNext() != null && ((cell.getPrev() == null && cell.getNext().getVal() == 0)
                 || (cell.getPrev() != null && cell.getNext().getVal() == 0))) {
             // System.out.println("Entro a next");
-            addVal(cell.getNext());
+            addVal(cell.getNext(), valCell + 1);
         } else if (cell.getPrev() != null && ((cell.getNext() == null && cell.getPrev().getVal() == 0)
                 || (cell.getPrev().getVal() == 0 && cell.getNext().getVal() != 0))) {
             // System.out.println("Entro a prev");
-            addVal(cell.getPrev());
-        } else if (cell.getDown() != null
+            addVal(cell.getPrev(), valCell + 1);
+        } else if (cell.getUp() != null
                 && ((cell.getNext() == null && cell.getPrev().getVal() != 0 && cell.getPrev() != null)
                         || (cell.getPrev() == null && cell.getNext().getVal() != 0))) {
             // System.out.println("Entro a down");
-            addVal(cell.getDown());
+            addVal(cell.getUp(), valCell + 1);
         }
 
     }
@@ -258,23 +301,23 @@ public class GameTable {
     // Function for cell search with your value
 
     public Cell searchCell(int valCell, Cell cell) {
-    		if (valCell == cell.getVal()) {
-    			return cell;
-    		} else if (cell.getRow() % 2 == 0) {
-    			if (cell.getNext() == null) {
-    				return searchCell(valCell, cell.getDown());
-    			} else {
-    				// System.out.println("Next");
-    				return searchCell(valCell, cell.getNext());
-    			}
-    		} else {
-    			if (cell.getPrev() == null) {
-    				return searchCell(valCell, cell.getDown());
-    			} else {
-    				// System.out.println("Prev");
-    				return searchCell(valCell, cell.getPrev());
-    			}
-    		}
+        if (valCell == cell.getVal()) {
+            return cell;
+        } else if (cell.getRow() % 2 == 0) {
+            if (cell.getNext() == null) {
+                return searchCell(valCell, cell.getDown());
+            } else {
+                // System.out.println("Next");
+                return searchCell(valCell, cell.getNext());
+            }
+        } else {
+            if (cell.getPrev() == null) {
+                return searchCell(valCell, cell.getDown());
+            } else {
+                // System.out.println("Prev");
+                return searchCell(valCell, cell.getPrev());
+            }
+        }
     }
 
     // Function used to do test
@@ -289,37 +332,65 @@ public class GameTable {
 
     // Add snakes and ladders
 
-    public void addSnake() { // Should be private
-
-    }
-
-    public void addLadder(String letter) {
-
-        // Math.floor(Math.random()*(N-M+1)+M); // Value between M1 and N include both
+    private void addSnakes(int number) {
+        // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
         int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
         int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
-        //Cambiar rows por cols =val
-        Cell cell = searchCell(init, first);
-        cell.setElements(letter);
-        cell = searchCell(end, first);
-        cell.setElements(letter);
+
+        Cell cellInit = searchCell(init, first);
+        Cell cellEnd = searchCell(end, first);
+
+        if (number > snakes) {
+
+        } else if (cellInit.hasElement() || cellEnd.hasElement()) {
+            addSnakes(number);
+    
+        } else {
+            Snake newSnake=new Snake(number, init, end);
+            cellInit.setSnake(newSnake);
+            cellEnd.setSnake(newSnake);
+            addSnakes(number + 1);  
+        }
 
     }
 
+    private void addLadders(int letter) {
+
+        // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
+        int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
+        int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
+
+        Cell cellInit = searchCell(init, first);
+        Cell cellEnd = searchCell(end, first);
+
+        if (letter >= ladders) {
+
+        } else if (cellInit.hasElement() || cellEnd.hasElement()) {
 
 
+            addLadders(letter);
+
+        } else {
+            String valLadder = Character.toString((char) ('A' + letter));
+            Ladder newLadder=new Ladder(valLadder, init, end);
+            cellInit.setLadder(newLadder);
+            cellEnd.setLadder(newLadder);
+            addLadders(letter + 1);
+        }
+
+    }
 
     // Roll dices
 
     public int rollDices() {
         int dice1 = (int) (Math.random() * 6 + 1);
-        //int dice2 = (int) (Math.random() * 6 + 1);
+        // int dice2 = (int) (Math.random() * 6 + 1);
 
         return dice1;
     }
 
-	public boolean isPlayerWon() {
-		return playerWon;
-	}
+    public boolean isPlayerWon() {
+        return playerWon;
+    }
 
 }
