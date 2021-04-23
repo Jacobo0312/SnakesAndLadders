@@ -19,6 +19,7 @@ public class GameTable {
     private Player turn;
     private PlayerList playerList;
     private boolean playerWon;
+    private ScoresTree scores;
 
     // Characters and its getters and setters
 
@@ -31,6 +32,7 @@ public class GameTable {
         playerWon = false;
         this.ladders = ladders;
         this.snakes = snakes;
+        scores = new ScoresTree();
         startGame(players);
 
     }
@@ -67,6 +69,7 @@ public class GameTable {
             Cell finalCell = searchCell(val, first);
             finalCell.setPlayers(turn.getToken());
             turn.setScore(turn.getMoves() * val);
+            scores.addScore(turn);
             return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + "Score: " + turn.getScore()
                     + " WIN";
         } else{
@@ -102,6 +105,10 @@ public class GameTable {
         pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Score: " + winner.getScore()
                 + ", Token: " + winner.getToken());
         pw.close();
+    }
+    
+    public String returnClassScores() {
+    	return scores.prepareToString();
     }
 
     public String returnScores() {

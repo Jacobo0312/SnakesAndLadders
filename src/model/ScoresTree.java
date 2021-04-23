@@ -34,7 +34,7 @@ public class ScoresTree {
 	}
 	
 	public void saveScores() {
-		// Para guardar tendría que tener en consideración, puesto que mantendría de mejor forma el arbol para importarlo después
+		// Para guardar tendría que tener en consideración preorden, puesto que mantendría de mejor forma el arbol para importarlo después
 		// Serializar no resultó ser bueno si no son arrays o arraylist
 	}
 	
@@ -48,6 +48,20 @@ public class ScoresTree {
 		
 	}
 	
+	public String prepareToString() {
+		String result = "";
+		result = inOrder(root);		
+		System.out.println(result);
+		return result;
+	}
+	
+	public String inOrder(Player current) {
+		if (current == null) {
+			return "";
+		} else {
+			return current.toString() + inOrder(current.getLeft()) + inOrder(current.getRight());
+		}
+	}
 	// Tendría que imprimirlos en Inorden, si no estoy mal.
 	// Puesto que, Inorden: Izquierda, Raíz, Derecha
 

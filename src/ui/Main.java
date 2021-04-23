@@ -39,6 +39,7 @@ public class Main {
             break;
         case 2:
             System.out.println(game.returnScores());
+            System.out.println(game.returnClassScores());
             break;
 
         default:
