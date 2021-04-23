@@ -59,12 +59,13 @@ public class GameTable {
         	// Esto esta hardcodeado, pero es para que tenga el token del ganador
         	Cell finalCell = searchCell(val, first);
         	finalCell.setPlayers(turn.getToken());
+        	turn.setScore(turn.getMoves() * val);
         	try {
-				saveWinners(turn, "Mirrorbeast");
+				saveWinners(turn, "Nicknamehere");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-            return "Dices "+dices+" Player "+token+ "WIN";
+            return "Dices " + dices + " Player " + token +" Moves: " + turn.getMoves() + "Score: " + turn.getScore() + " WIN";
         } else{
             Cell moveCell=searchCell(newPos, first);
             moveCell.setPlayers(moveCell.getPlayers()+token);
@@ -76,7 +77,7 @@ public class GameTable {
     
     public void saveWinners(Player winner, String nickName) throws FileNotFoundException {
     	PrintWriter pw = new PrintWriter("./data/winners.csv");
-    	pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Token: " + winner.getToken());
+    	pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Score: " + winner.getScore() +  ", Token: " + winner.getToken());
     	pw.close();
     }
     

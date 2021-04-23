@@ -1,6 +1,6 @@
 package model;
 
-public class PlayerList {
+public class PlayerList{
 	
 	private Player head;
 	private Player tail;

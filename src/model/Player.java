@@ -1,20 +1,56 @@
 package model;
 
 public class Player {
-	private String token;
-	private int pos;
-	private int moves;
 
+	// For the binary tree
+	private Player right;
+	private Player left;
+	
+	// Game
+	
+	private String token;
+	
+	private int pos;
+	
+	private int moves;
+	
+	private int score;
+	
 	private Player nextPlayer;
 	
 	public Player(String t) {
 		token = t;
 		pos = 1; // Ya que empieza en la primera celda
 		moves = 0;
+		score = 0;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public String getToken() {
 		return token;
+	}
+
+	public Player getRight() {
+		return right;
+	}
+
+	public void setRight(Player right) {
+		this.right = right;
+	}
+
+	public Player getLeft() {
+		return left;
+	}
+
+	public void setLeft(Player left) {
+		this.left = left;
 	}
 
 	public void setToken(String token) {
