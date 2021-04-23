@@ -1,6 +1,7 @@
 
 package ui;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import model.GameTable;
@@ -78,13 +79,21 @@ public class Main {
             System.out.println(game);
         }
         */
-
-        String line=sc.nextLine();
+        String line = "";
          while (!game.isPlayerWon()) {
-             line=sc.nextLine();
+            line = sc.nextLine();
             System.out.println(game.move());
             System.out.println(game);
         }
+         
+        System.out.println("El jugador " + game.getTurn().getToken() + " ha ganado el juego, con " + game.getTurn().getMoves() + " movimientos.\n");
+        System.out.println("Ingrese el nombre o nickname del jugador");
+        line = sc.nextLine();
+        try {
+			game.saveWinners(game.getTurn(), line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
         
     }
