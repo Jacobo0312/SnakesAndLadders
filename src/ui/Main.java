@@ -37,7 +37,7 @@ public class Main {
             startGame();
             break;
         case 2:
-            System.out.println("Scores");
+            System.out.println(game.returnScores());
             break;
 
         default:
@@ -73,7 +73,7 @@ public class Main {
         //For add letter of the snakes 
         //System.out.println((char) ('A'+1));
 
-        while (true) {
+        while (!game.isPlayerWon()) {
             System.out.println(game.move());
             System.out.println(game);
         }

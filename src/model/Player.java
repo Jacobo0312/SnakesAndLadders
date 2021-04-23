@@ -9,7 +9,8 @@ public class Player {
 	
 	public Player(String t) {
 		token = t;
-		pos = 1; // Ya que empieza en la primera celda 
+		pos = 1; // Ya que empieza en la primera celda
+		moves = 0;
 	}
 
 	public String getToken() {

@@ -2,7 +2,16 @@ package model;
 
 public class Cell {
 	private int val; // Valor o numero que va a tener la celda
+	private String players;
 	private String elements;
+
+	public String getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(String players) {
+		this.players = players;
+	}
 
 	private int row;
 	private int col;
@@ -19,6 +28,7 @@ public class Cell {
 		this.col=col;
 		val = 0;
 		elements = "";
+		players = "";
 	}
 
 	public int getVal() {
@@ -88,7 +98,7 @@ public class Cell {
 
 	public String toString(){
 		//return ("("+row+","+col+")");
-		return "("+val+ elements + ")'";
+		return "("+val+ players + ")'";
 	}
 
 

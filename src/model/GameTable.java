@@ -1,5 +1,11 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class GameTable {
 
     private Cell first;
@@ -9,6 +15,7 @@ public class GameTable {
     private int numPlayers;
     private Player turn;
     private PlayerList playerList;
+    private boolean playerWon;
 
     // Characters and its getters and setters
 
@@ -18,6 +25,7 @@ public class GameTable {
         this.val = (n * m);
         this.numPlayers = players.length();
         playerList = new PlayerList();
+        playerWon = false;
         startGame(players);
 
     }
@@ -28,26 +36,69 @@ public class GameTable {
         Cell actualCell=searchCell(turnPos, first);
 
 
-        
         String token=turn.getToken();
 
-        String cellElements = actualCell.getElements();
-        int index = cellElements.indexOf(token);
-        cellElements=cellElements.substring(0, index) + cellElements.substring(index + 1, cellElements.length());
-        actualCell.setElements(cellElements);
+        String cellElements = actualCell.getPlayers();
+        /*int index = cellElements.indexOf(token);*/
+        // Revisar este método Substring
+        StringBuilder test = new StringBuilder(cellElements);
+        /*System.out.println("STRING ANTES: " + test);*/
+        int indexTwo = test.indexOf(token);
+        if (indexTwo >= 0) {
+        	test = test.deleteCharAt(indexTwo);
+        	/*System.out.println("\nSTRING DESPUES: " + test);*/
+        }
+        /*cellElements = cellElements.substring(0, index) + cellElements.substring(index + 1, cellElements.length());*/
+        actualCell.setPlayers(test.toString());
 
         int newPos=dices+turnPos;
+        turn.setMoves(turn.getMoves() + 1);
         turn.setPos(newPos);
-        if (newPos>val){
+        if (newPos>=val){
+        	playerWon = true;
+        	// Esto esta hardcodeado, pero es para que tenga el token del ganador
+        	Cell finalCell = searchCell(val, first);
+        	finalCell.setPlayers(turn.getToken());
+        	try {
+				saveWinners(turn, "Mirrorbeast");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
             return "Dices "+dices+" Player "+token+ "WIN";
-        }else{
+        } else{
             Cell moveCell=searchCell(newPos, first);
-            moveCell.setElements(moveCell.getElements()+token);
+            moveCell.setPlayers(moveCell.getPlayers()+token);
     
             turn=turn.getNextPlayer();
             return "Dices "+dices+" Player "+token;
         }
-
+    }
+    
+    public void saveWinners(Player winner, String nickName) throws FileNotFoundException {
+    	PrintWriter pw = new PrintWriter("./data/winners.csv");
+    	pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Token: " + winner.getToken());
+    	pw.close();
+    }
+    
+    public String returnScores() {
+    	String scores = "";
+    	try {
+    		BufferedReader br = new BufferedReader(new FileReader("./data/winners.csv"));
+			scores = returnScores(br.readLine(), br);
+		} catch (IOException e) {
+			scores = "NO SCORES!";
+			//e.printStackTrace();
+		}
+    	return scores;
+    }
+    
+    private String returnScores(String line, BufferedReader br) throws IOException {
+    	String ln = line;
+    	if (ln == null) {
+    		return ""; 
+    	} else {
+    		return ln + returnScores(br.readLine(), br);
+    	}
     }
 
     public void assignPlayers(int num, String characters/*,Player player*/) {
@@ -81,7 +132,7 @@ public class GameTable {
 
     private void setupGame(String players){
         Cell cell1=searchCell(1, first);
-        cell1.setElements(players);
+        cell1.setPlayers(players);
         turn=getPlayerList().getHead();
     }
 
@@ -206,24 +257,23 @@ public class GameTable {
     // Function for cell search with your value
 
     public Cell searchCell(int valCell, Cell cell) {
-
-        if (valCell == cell.getVal()) {
-            return cell;
-        } else if (cell.getRow() % 2 == 0) {
-            if (cell.getNext() == null) {
-                return searchCell(valCell, cell.getDown());
-            } else {
-                // System.out.println("Next");
-                return searchCell(valCell, cell.getNext());
-            }
-        } else {
-            if (cell.getPrev() == null) {
-                return searchCell(valCell, cell.getDown());
-            } else {
-                // System.out.println("Prev");
-                return searchCell(valCell, cell.getPrev());
-            }
-        }
+    		if (valCell == cell.getVal()) {
+    			return cell;
+    		} else if (cell.getRow() % 2 == 0) {
+    			if (cell.getNext() == null) {
+    				return searchCell(valCell, cell.getDown());
+    			} else {
+    				// System.out.println("Next");
+    				return searchCell(valCell, cell.getNext());
+    			}
+    		} else {
+    			if (cell.getPrev() == null) {
+    				return searchCell(valCell, cell.getDown());
+    			} else {
+    				// System.out.println("Prev");
+    				return searchCell(valCell, cell.getPrev());
+    			}
+    		}
     }
 
     // Function used to do test
@@ -266,5 +316,9 @@ public class GameTable {
 
         return dice1;
     }
+
+	public boolean isPlayerWon() {
+		return playerWon;
+	}
 
 }
