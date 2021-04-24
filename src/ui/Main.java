@@ -1,7 +1,7 @@
 
 package ui;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import model.GameTable;
@@ -13,6 +13,7 @@ public class Main {
 
     public Main() {
         sc = new Scanner(System.in);
+        game = new GameTable(2, 2, "", 0, 0);
     }
 
     public static void main(String[] args) throws Exception {
@@ -39,6 +40,7 @@ public class Main {
             break;
         case 2:
             System.out.println(game.returnScores());
+            System.out.println("--------------------------");
             System.out.println(game.returnClassScores());
             break;
 
@@ -129,10 +131,11 @@ public class Main {
         System.out.println("Ingrese el nombre o nickname del jugador");
         String line = sc.nextLine();
         try {
-            game.saveWinners(game.getTurn(), line);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        	game.saveWinners(game.getTurn(), line);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
     }
 
 

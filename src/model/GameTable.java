@@ -1,7 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -99,11 +99,32 @@ public class GameTable {
         return position;
     }
 
-    public void saveWinners(Player winner, String nickName) throws FileNotFoundException {
+    public void saveWinners(Player winner, String nickName) throws IOException {
+    	String result = "";
+    	if (new File("./data/winners.csv").exists()) {
+    		BufferedReader br = new BufferedReader(new FileReader("./data/winners.csv"));    		
+    		result = readWinners(br.readLine(), br);
+    	}
         PrintWriter pw = new PrintWriter("./data/winners.csv");
-        pw.println("Nickname: " + nickName + ", Moves: " + winner.getMoves() + ", Score: " + winner.getScore()
-                + ", Token: " + winner.getToken());
+        if (!result.equals("")) {
+        	pw.println(result);
+        }
+        winner.setNickName(nickName);
+        pw.println(winner.getNickName() + "," + winner.getToken() + "," + winner.getMoves() + "," + winner.getScore());
         pw.close();
+    }
+    
+    public String readWinners(String line, BufferedReader br) throws IOException {
+    	if (line == null) {
+    		return "";
+    	} else {
+    		String lineBefore = br.readLine();
+    		if (lineBefore == null || lineBefore.equals("")) {
+    			return line + readWinners(lineBefore, br);
+    		} else {    			
+    			return line + "\n" + readWinners(lineBefore, br);
+    		}
+    	}
     }
     
     public String returnClassScores() {
@@ -127,7 +148,12 @@ public class GameTable {
         if (ln == null) {
             return "";
         } else {
-            return ln + returnScores(br.readLine(), br);
+        	String before = br.readLine();
+        	if (before == null || before.equals("")) {
+        		return ln + returnScores(before, br);
+        	} else {        		
+        		return ln + "\n" + returnScores(before, br);
+        	}
         }
     }
 
@@ -150,6 +176,11 @@ public class GameTable {
     }
 
     public void startGame(String players) {
+        try {
+			scores.prepareLoadScores();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         first = new Cell(0, 0);
         // System.out.println("Se creo first");
         createRow(0, 0, first);

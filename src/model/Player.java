@@ -8,6 +8,8 @@ public class Player {
 	
 	// Game
 	
+	private String nickName;
+	
 	private String token;
 	
 	private int pos;
@@ -19,6 +21,7 @@ public class Player {
 	private Player nextPlayer;
 	
 	public Player(String t) {
+		nickName = "";
 		token = t;
 		pos = 1; // Ya que empieza en la primera celda
 		moves = 0;
@@ -73,11 +76,18 @@ public class Player {
 	public void setNextPlayer(Player nextPlayer) {
 		this.nextPlayer = nextPlayer;
 	}
+	
+	public String getNickName() {
+		return nickName;
+	}
 
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	
 	@Override
 	public String toString() {
-		String details = "Token: " + token + "\nPos: " + pos;
+		String details = "Nickname: " + nickName + "\nToken: " + token + "\nScore: " + score;
 		return details;
 	}
 
