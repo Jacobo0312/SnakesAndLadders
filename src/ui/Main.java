@@ -71,7 +71,6 @@ public class Main {
         int snakes = Integer.parseInt(parts[2]);
         int ladders = Integer.parseInt(parts[3]);
         String players = parts[4];
-        System.out.println("ladders: "+ladders);
         game = new GameTable(rows, cols, players,ladders,snakes);
 
         System.out.println(game.toString2());
