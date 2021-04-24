@@ -1,23 +1,23 @@
 package model;
 
 public class Ladder {
-	private String letter;
+	private int number;
 	private int initPos;
 	private int endPos;
 	// Asegurarse de que initPos siempre es menor a endPos;
 	
-	public Ladder(String n, int i, int e) {
-		letter = n;
+	public Ladder(int n, int i, int e) {
+		number = n;
 		initPos = i;
 		endPos = e;
 	}
 
-	public String getLetter() {
-		return letter;
+	public int getNumber() {
+		return number;
 	}
 
-	public void setLetter(String n) {
-		this.letter = n;
+	public void setNumber(int n) {
+		this.number = n;
 	}
 
 	public int getInitPos() {
@@ -39,7 +39,7 @@ public class Ladder {
 
 	@Override
 	public String toString() {
-		return letter;
+		return Integer.toString(number);
 	}
 	
 	

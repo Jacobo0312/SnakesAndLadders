@@ -1,23 +1,23 @@
 package model;
 
 public class Snake {
-	private int number;
+	private String letter;
 	private int initPos;
 	private int endPos;
 	// Asegurarse de que initPos siempre es mayor a endPos;
 	
-	public Snake(int l, int i, int e) {
-		number = l;
+	public Snake(String l, int i, int e) {
+		letter = l;
 		initPos = i;
 		endPos = e;
 	}
 
-	public int getNumber() {
-		return number;
+	public String getLetter() {
+		return letter;
 	}
 
-	public void setNumber(char number) {
-		this.number = number;
+	public void setLetter(String letter) {
+		this.letter = letter;
 	}
 
 	public int getInitPos() {
@@ -39,7 +39,7 @@ public class Snake {
 
 	@Override
 	public String toString() {
-		return Integer.toString(number);
+		return letter;
 	}
 
 }

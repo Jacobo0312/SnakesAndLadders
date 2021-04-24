@@ -83,7 +83,7 @@ public class GameTable {
             }
             moveCell.setPlayers(moveCell.getPlayers() + token);
             turn = turn.getNextPlayer();
-            return "Dices " + dices + " Player " + token;
+            return "El jugador " + token + " ha lanzado el dado y obtuvo un puntaje  " + dices;
         }
     }
 
@@ -96,7 +96,6 @@ public class GameTable {
         }else{
             position=cell.getSnake().getInitPos();
         }
-
         return position;
     }
 
@@ -178,8 +177,8 @@ public class GameTable {
         cell1.setPlayers(players);
         turn = getPlayerList().getHead();
 
-        addLadders(0);
-        addSnakes(1);
+        addLadders(1);
+        addSnakes(0);
     }
 
     private void createRow(int i, int j, Cell cell) {
@@ -269,7 +268,7 @@ public class GameTable {
         String message = "";
 
         if (cell != null) {
-            message = cell.toString();
+            message = cell.toString2();
             message += toStringRow2(cell.getNext());
         }
 
@@ -335,50 +334,50 @@ public class GameTable {
 
     // Add snakes and ladders
 
-    private void addSnakes(int number) {
+    private void addSnakes(int letter) {
         // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
-        int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
-        int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
+        int init = (int) Math.floor(Math.random() * ((val - cols) - 2 + 1) + 2);
+        int end = (int) Math.floor(Math.random() * ((val-1) - (init + cols) + 1) + init + cols);
 
         Cell cellInit = searchCell(init, first);
         Cell cellEnd = searchCell(end, first);
 
-        if (number > snakes) {
+        if (letter >= snakes) {
 
         } else if (cellInit.hasElement() || cellEnd.hasElement()) {
-            addSnakes(number);
+            addSnakes(letter);
     
         } else {
-            Snake newSnake=new Snake(number, init, end);
+            String valSnake = Character.toString((char) ('A' + letter));
+            Snake newSnake=new Snake(valSnake, init, end);
             cellInit.setSnake(newSnake);
             cellEnd.setSnake(newSnake);
-            addSnakes(number + 1);  
+            addSnakes(letter + 1);  
         }
 
     }
 
-    private void addLadders(int letter) {
+    private void addLadders(int number) {
 
         // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
-        int init = (int) Math.floor(Math.random() * (((rows * cols) - cols) - 2 + 1) + 2);
-        int end = (int) Math.floor(Math.random() * ((rows * cols) - (init + cols) + 1) + init + cols);
+        int init = (int) Math.floor(Math.random() * ((val - cols) - 2 + 1) + 2);
+        int end = (int) Math.floor(Math.random() * (val - (init + cols) + 1) + init + cols);
 
         Cell cellInit = searchCell(init, first);
         Cell cellEnd = searchCell(end, first);
 
-        if (letter >= ladders) {
+        if (number > ladders) {
 
         } else if (cellInit.hasElement() || cellEnd.hasElement()) {
 
 
-            addLadders(letter);
+            addLadders(number);
 
         } else {
-            String valLadder = Character.toString((char) ('A' + letter));
-            Ladder newLadder=new Ladder(valLadder, init, end);
+            Ladder newLadder=new Ladder(number, init, end);
             cellInit.setLadder(newLadder);
             cellEnd.setLadder(newLadder);
-            addLadders(letter + 1);
+            addLadders(number + 1);
         }
 
     }

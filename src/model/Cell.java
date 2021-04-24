@@ -126,8 +126,21 @@ public class Cell {
 			element=ladder.toString();
 		}
 		//return ("("+row+","+col+")");
-		return "("+val+ players +"  "+element+")'";
+		return "["+element+"  "+players+"]";
 	}
+
+
+	public String toString2(){
+
+		String element="";
+		if (snake!=null){
+			element=snake.toString();
+		}else if (ladder!=null){
+			element=ladder.toString();
+		}
+		return ("["+val+" "+element+"]");
+	}
+
 
 
 }

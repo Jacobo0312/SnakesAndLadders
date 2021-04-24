@@ -71,8 +71,9 @@ public class Main {
         String players = parts[4];
         System.out.println("ladders: "+ladders);
         game = new GameTable(rows, cols, players,ladders,snakes);
-        System.out.println(game);
 
+        System.out.println(game.toString2());
+        System.out.println(game);
         /*
         Simulador
         while (!game.isPlayerWon()) {
