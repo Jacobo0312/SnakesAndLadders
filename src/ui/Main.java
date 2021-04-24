@@ -74,30 +74,66 @@ public class Main {
 
         System.out.println(game.toString2());
         System.out.println(game);
-        /*
-        Simulador
-        while (!game.isPlayerWon()) {
+        play();
+
+    }
+
+
+    public void play(){
+        System.out.print("Presione enter para lanzar los dados: ");
+                String line = sc.nextLine();
+        if (line.isEmpty()){
+            if (!game.isPlayerWon()){
+                System.out.println(game.move());
+                System.out.println(game);
+                play();
+            }else{
+           winner();
+            }
+
+        }else if  (line.equals("num")){
+            System.out.println("----TABLA INICIAL----");
+            System.out.println(game.toString2());
+            play();
+        }else if (line.equals("menu")){
+           //Exit
+        }else if (line.equals("simul")){
+            simulator();
+        }else{
+            System.out.println("Error ! NO INGRESE CARACTERES---PRESIONE ENTER----");
+            play();
+        }
+
+
+    }
+
+
+    private void simulator(){
+        if (!game.isPlayerWon()){
             System.out.println(game.move());
             System.out.println(game);
-        }
-        */
-        String line = "";
-         while (!game.isPlayerWon()) {
-            line = sc.nextLine();
-            System.out.println(game.move());
-            System.out.println(game);
-        }
-         
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            simulator();
+        }else{
+            winner();
+        }       
+    }
+
+
+    private void winner(){
         System.out.println("El jugador " + game.getTurn().getToken() + " ha ganado el juego, con " + game.getTurn().getMoves() + " movimientos.\n");
         System.out.println("Ingrese el nombre o nickname del jugador");
-        line = sc.nextLine();
+        String line = sc.nextLine();
         try {
-			game.saveWinners(game.getTurn(), line);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-        
+            game.saveWinners(game.getTurn(), line);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
 
 }
