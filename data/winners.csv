@@ -2,3 +2,6 @@ Mirror,*,2,50
 MirrorTwo,/,4,80
 MirrorThree,$,5,80
 MirrorFour,/,2,32
+SapeOne,#,2,40
+SapeTwo,%,2,20
+SapeThree,#,1,4

@@ -38,40 +38,58 @@ public class GameTable {
     }
 
     public String move() {
+    	// Se obtienen las posiciones actuales del jugador y los dados que lanzó
         int dices = rollDices();
         int turnPos = turn.getPos();
         Cell actualCell = searchCell(turnPos, first);
-
+        
+        // Se obtiene el token del jugador
         String token = turn.getToken();
 
+        // Se obtienen los players de la celda actual del jugador
         String cellElements = actualCell.getPlayers();
-        /* int index = cellElements.indexOf(token); */
-        // Revisar este metodo Substring
+        
+        // Se elimina el jugador de la celda actual, pues va a avanzar.
         StringBuilder test = new StringBuilder(cellElements);
-        /* System.out.println("STRING ANTES: " + test); */
         int indexTwo = test.indexOf(token);
         if (indexTwo >= 0) {
             test = test.deleteCharAt(indexTwo);
-            /* System.out.println("\nSTRING DESPUES: " + test); */
         }
-        /*
-         * cellElements = cellElements.substring(0, index) +
-         * cellElements.substring(index + 1, cellElements.length());
-         */
         actualCell.setPlayers(test.toString());
-
+        
+        // Se obtiene la posición del jugador posterior a lanzar los dados y se aumentan los movimientos
         int newPos = dices + turnPos;
         turn.setMoves(turn.getMoves() + 1);
         turn.setPos(newPos);
-        if (newPos >= val) { // Creo que deberia ser mayor,no igual
+        
+        if (newPos >= val) {
+        	return winProcess(dices, token);
+        } else{
+            Cell moveCell = searchCell(newPos, first);
+            if (moveCell.hasElement()){ 
+                int position=moveElement(moveCell);
+                turn.setPos(position);
+                moveCell=searchCell(position, first);
+                if (turn.getPos() >= val) {
+                	return winProcess(dices, token);
+                }
+            }
+            moveCell.setPlayers(moveCell.getPlayers() + token);
+            turn = turn.getNextPlayer();
+            return "El jugador " + token + " ha lanzado el dado y obtuvo un puntaje  " + dices;
+        }
+
+        
+        /*if (newPos >= val) { // Creo que deberia ser mayor,no igual
             playerWon = true;
             // Esto esta hardcodeado, pero es para que tenga el token del ganador
             Cell finalCell = searchCell(val, first);
             finalCell.setPlayers(turn.getToken());
             turn.setScore(turn.getMoves() * val);
             scores.addScore(turn);
-            return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + "Score: " + turn.getScore()
+            return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + " Score: " + turn.getScore()
                     + " WIN";
+            
         } else{
             Cell moveCell = searchCell(newPos, first);
 
@@ -84,7 +102,16 @@ public class GameTable {
             moveCell.setPlayers(moveCell.getPlayers() + token);
             turn = turn.getNextPlayer();
             return "El jugador " + token + " ha lanzado el dado y obtuvo un puntaje  " + dices;
-        }
+        }*/
+    }
+    
+    public String winProcess(int dices, String token) {
+    	playerWon = true;
+    	Cell finalCell = searchCell(val,first);
+    	finalCell.setPlayers(turn.getToken());
+    	turn.setScore(turn.getMoves() * val);
+    	scores.addScore(turn);
+    	return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + " Score: " + turn.getScore() + " WIN";
     }
 
     private int moveElement(Cell cell){
