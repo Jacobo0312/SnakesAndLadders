@@ -19,7 +19,7 @@ When start game has three options:
 - "num" show initial table game
   
 
-  ### Aqui va el enlace al pdf de los requerimentos y el diagrama
+  ### [Link to documentation](https://github.com/Jacobo0312/CLI-SnakesAndLadders/blob/main/docs/T2.pdf "PDF")
 
 ## Made by
 + [Gabriel Delgado](https://github.com/G-Delgado "Gabriel Delgado")

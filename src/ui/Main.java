@@ -13,6 +13,7 @@ public class Main {
 
     public Main() {
         sc = new Scanner(System.in);
+        game = new GameTable(2, 2, "", 0, 0);
     }
 
     public static void main(String[] args) throws Exception {
@@ -73,7 +74,7 @@ public class Main {
         
             if (verifySize( rows, cols, snakes, ladders)){
                 game = new GameTable(rows, cols, players,ladders,snakes);
-
+                System.out.println("JUGADORES:\n" + game.getPlayerList().toString());
                 System.out.println(game.toString2());
                 System.out.println(game);
                 play();

@@ -80,29 +80,6 @@ public class GameTable {
         }
 
         
-        /*if (newPos >= val) { // Creo que deberia ser mayor,no igual
-            playerWon = true;
-            // Esto esta hardcodeado, pero es para que tenga el token del ganador
-            Cell finalCell = searchCell(val, first);
-            finalCell.setPlayers(turn.getToken());
-            turn.setScore(turn.getMoves() * val);
-            scores.addScore(turn);
-            return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + " Score: " + turn.getScore()
-                    + " WIN";
-            
-        } else{
-            Cell moveCell = searchCell(newPos, first);
-
-            if (moveCell.hasElement()){
-                
-                int position=moveElement(moveCell);
-                turn.setPos(position);
-                moveCell=searchCell(position, first);  
-            }
-            moveCell.setPlayers(moveCell.getPlayers() + token);
-            turn = turn.getNextPlayer();
-            return "El jugador " + token + " ha lanzado el dado y obtuvo un puntaje  " + dices;
-        }*/
     }
     
     public String winProcess(int dices, String token) {
@@ -188,7 +165,7 @@ public class GameTable {
         if (num == 0) {
             // System.out.println("Inside default case");
             // If it is a default case
-            System.out.println("JUGADORES:\n" + playerList.toString());
+           // System.out.println("JUGADORES:\n" + playerList.toString());
         } else {
             Player player = new Player(characters.substring(0, 1));
             // System.out.println(player);
