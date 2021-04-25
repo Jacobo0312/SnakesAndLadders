@@ -126,7 +126,7 @@ public class Cell {
 			element=ladder.toString();
 		}
 		//return ("("+row+","+col+")");
-		return "["+element+"  "+players+"]";
+		return " ["+element+"  "+players+"] ";
 	}
 
 
@@ -138,7 +138,7 @@ public class Cell {
 		}else if (ladder!=null){
 			element=ladder.toString();
 		}
-		return ("["+val+" "+element+"]");
+		return (" ["+val+" "+element+"] ");
 	}
 
 

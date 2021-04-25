@@ -38,7 +38,7 @@ public class GameTable {
     }
 
     public String move() {
-    	// Se obtienen las posiciones actuales del jugador y los dados que lanzó
+    	// Se obtienen las posiciones actuales del jugador y los dados que lanzï¿½
         int dices = rollDices();
         int turnPos = turn.getPos();
         Cell actualCell = searchCell(turnPos, first);
@@ -57,7 +57,7 @@ public class GameTable {
         }
         actualCell.setPlayers(test.toString());
         
-        // Se obtiene la posición del jugador posterior a lanzar los dados y se aumentan los movimientos
+        // Se obtiene la posiciï¿½n del jugador posterior a lanzar los dados y se aumentan los movimientos
         int newPos = dices + turnPos;
         turn.setMoves(turn.getMoves() + 1);
         turn.setPos(newPos);
@@ -111,7 +111,7 @@ public class GameTable {
     	finalCell.setPlayers(turn.getToken());
     	turn.setScore(turn.getMoves() * val);
     	scores.addScore(turn);
-    	return "Dices " + dices + " Player " + token + " Moves: " + turn.getMoves() + " Score: " + turn.getScore() + " WIN";
+    	return "Puntaje " + dices + " Jugador " + token + " Movimientos: " + turn.getMoves() + " Score: " + turn.getScore() + " GANO";
     }
 
     private int moveElement(Cell cell){
@@ -188,7 +188,7 @@ public class GameTable {
         if (num == 0) {
             // System.out.println("Inside default case");
             // If it is a default case
-            System.out.println("RESULTADO:\n" + playerList.toString());
+            System.out.println("JUGADORES:\n" + playerList.toString());
         } else {
             Player player = new Player(characters.substring(0, 1));
             // System.out.println(player);
@@ -196,7 +196,7 @@ public class GameTable {
             playerList.append(player);
             // System.out.println(playerList.getHead().getToken() + " Cola: " +
             // playerList.getTail().getToken());
-            // System.out.println(pl);
+            // System.out.println(pl);s
             characters = characters.substring(1, num);
             assignPlayers(num - 1, characters/* ,player.getNextPlayer() */);
         }
@@ -394,8 +394,8 @@ public class GameTable {
 
     private void addSnakes(int letter) {
         // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
-        int init = (int) Math.floor(Math.random() * ((val - cols) - 2 + 1) + 2);
-        int end = (int) Math.floor(Math.random() * ((val-1) - (init + cols) + 1) + init + cols);
+        int init = (int) Math.floor(Math.random() * ((val - rows) - 2 + 1) + 2);
+        int end = (int) Math.floor(Math.random() * ((val-1) - (init + cols) + 1) + (init + cols));
 
         Cell cellInit = searchCell(init, first);
         Cell cellEnd = searchCell(end, first);

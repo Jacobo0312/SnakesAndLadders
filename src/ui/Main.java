@@ -13,7 +13,6 @@ public class Main {
 
     public Main() {
         sc = new Scanner(System.in);
-        game = new GameTable(2, 2, "", 0, 0);
     }
 
     public static void main(String[] args) throws Exception {
@@ -62,8 +61,8 @@ public class Main {
 
     private void startGame() {
         System.out.println("S T A R T I N G  N E W  G A M E...\n");
-        System.out.println("Insert a single string like the next example:\n" +
-        "5 4 2 3 #%*\n" + "In which a matrix 5 x 4 is created with:\n2 snakes, 3 ladders and 3 players, one for each symbol (Max 9 players)");
+        System.out.println("Inserte una sola cadena como el siguiente ejemplo:\n" +
+        "5 4 2 3 #%*\n" + "En la que se crea una matriz de 5 x 4 con:\n2 serpientes, 3 escaleras y 3 jugadores, uno por cada símbolo (Max 9 jugadores)");
         String entry = sc.nextLine();
         String [] parts = entry.split(" ");
         int rows = Integer.parseInt(parts[0]);
@@ -71,14 +70,29 @@ public class Main {
         int snakes = Integer.parseInt(parts[2]);
         int ladders = Integer.parseInt(parts[3]);
         String players = parts[4];
-        game = new GameTable(rows, cols, players,ladders,snakes);
+        
+            if (verifySize( rows, cols, snakes, ladders)){
+                game = new GameTable(rows, cols, players,ladders,snakes);
 
-        System.out.println(game.toString2());
-        System.out.println(game);
-        play();
+                System.out.println(game.toString2());
+                System.out.println(game);
+                play();
+        
 
+            }
+    
     }
 
+
+    private boolean verifySize(int rows,int cols,int snakes,int ladders) {
+            int val =rows*cols;
+            int elements=(snakes+ladders)*2;
+            if (val>elements+rows){
+                return true;
+            }
+            System.out.println("\nDIMENSIONES NO VALIDAS\n");
+        return false;
+    }
 
     public void play(){
         System.out.print("Presione enter para lanzar los dados: ");
