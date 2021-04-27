@@ -1,9 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -17,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -31,10 +27,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Cell;
 import model.GameTable;
@@ -168,6 +164,8 @@ public class GuiController {
 				}
 			});
 			grid = new GridPane();
+			grid.setMinHeight(700);
+			grid.setMinWidth(900);
 			addToGrid(game.getVal());
 			System.out.println("JUGADORES:\n" + game.getPlayerList().toString());
 			System.out.println(game.toString2());
@@ -182,6 +180,7 @@ public class GuiController {
 			BorderPane.setMargin(throwDice, new Insets(12, 12, 12, 12)); // optional
 			bp.setBottom(throwDice);
 			gridBox.getChildren().setAll(bp);
+			VBox.setVgrow(bp, Priority.ALWAYS);
 			sizeColumns(c, 0);
 			sizeRows(r, 0);
 			fixFirst();
@@ -195,6 +194,7 @@ public class GuiController {
 			alert.setContentText("Dimesiones invalidas");
 
 			alert.showAndWait();
+			loadMenu();
 
 		}
 	}
@@ -252,14 +252,14 @@ public class GuiController {
 	}
 
 	private void winner() {
-		System.out.println("El jugador " + game.getTurn().getToken() + " ha ganado el juego, con "
+		/*System.out.println("El jugador " + game.getTurn().getToken() + " ha ganado el juego, con "
 				+ game.getTurn().getMoves() + " movimientos.\n");
-		System.out.println("Ingrese el nombre o nickname del jugador");
+		System.out.println("Ingrese el nombre o nickname del jugador");*/
 
 		TextInputDialog dialog = new TextInputDialog();
-		dialog.setTitle("Text Input Dialog");
-		dialog.setHeaderText("Look, a Text Input Dialog");
-		dialog.setContentText("Please enter your name:");
+		dialog.setTitle("Ganador!");
+		dialog.setHeaderText("Sos un campeón!");
+		dialog.setContentText("Por favor, ingresa tu nombre:");
 		/*Optional<String> result = dialog.showAndWait();
 		System.out.println(dialog.getResult());*/
 		dialog.show();
@@ -366,7 +366,8 @@ public class GuiController {
 
 		} else {
 			ColumnConstraints cc = new ColumnConstraints();
-			cc.setPrefWidth(100);
+			//cc.setPrefWidth(100);
+			cc.setPercentWidth(100d / cols);
 			grid.getColumnConstraints().add(cc);
 			sizeColumns(cols, alt + 1);
 		}
@@ -377,7 +378,8 @@ public class GuiController {
 
 		} else {
 			RowConstraints rc = new RowConstraints();
-			rc.setPrefHeight(100);
+			rc.setPrefHeight(200);
+			//rc.setPercentHeight(alt);
 			grid.getRowConstraints().add(rc);
 			sizeRows(rows, alt + 1);
 		}

@@ -185,7 +185,7 @@ public class Cell {
 		}else if (ladder!=null){
 			element=ladder.toString();
 		}
-		return (" ["+val+""+element+"] ");
+		return (" ["+val+" "+element+"] ");
 	}
 
 

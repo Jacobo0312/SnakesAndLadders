@@ -6,3 +6,12 @@ Test4,$,2,32
 Test5,%,2,32
 Test6,%,4,64
 Test7,%,4,64
+GUIuno,#,2,50
+GuiDos,#,2,18
+GuiTres,%,4,64
+CLIUno,%,4,80
+CliDos,#,2,18
+CliTres,#,1,9
+CliCuatro,#,2,18
+GUIBigOne,#,3,75
+GUIFinishOne,#,5,125

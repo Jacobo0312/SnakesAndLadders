@@ -1,8 +1,5 @@
 package gui;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,14 +9,12 @@ import model.GameTable;
 
 public class Main extends Application{
 	
-    private Scanner sc;
     private GameTable game;
     private GuiController gC;
     private int run;
 
     public Main() {
     	run = 0;
-        sc = new Scanner(System.in);
         game = new GameTable(2, 2, "", 0, 0, run);
         gC = new GuiController(game);
     }
