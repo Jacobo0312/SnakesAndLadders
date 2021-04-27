@@ -1,8 +1,16 @@
 package model;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
+
 public class Cell {
 	private int val; // Valor o numero que va a tener la celda
 	private String players;
+	private int run;
+	
+	@FXML
+	private Label lb;
 
 	public String getPlayers() {
 		return players;
@@ -10,6 +18,9 @@ public class Cell {
 
 	public void setPlayers(String players) {
 		this.players = players;
+		if (run == 0) {			
+			lb.setText(toString());
+		}
 	}
 
 	private int row;
@@ -24,13 +35,26 @@ public class Cell {
 	private Ladder ladder;
 
 	
-	public Cell (int row, int col) {
+	public Cell (int row, int col, int run) {
+		this.run = run;
 		this.row=row;
 		this.col=col;
 		val = 0;
 		players = "";
 		snake=null;
 		ladder=null;
+		if (run == 0) {			
+			lb = new Label(toString());
+			lb.setTextFill(Paint.valueOf("#ffffff"));
+		}
+	}
+	
+	public Label getLabel() {
+		return lb;
+	}
+	
+	public void setLabel(String s) {
+		lb.setText(s);
 	}
 
 	public int getVal() {
@@ -39,6 +63,9 @@ public class Cell {
 
 	public void setVal(int val) {
 		this.val = val;
+		if (run == 0) {			
+			lb.setText(toString());
+		}
 	}
 
 	
@@ -98,6 +125,9 @@ public class Cell {
 
 	public void setSnake(Snake snake) {
 		this.snake = snake;
+		if (run == 0) {			
+			lb.setText(toString());
+		}
 	}
 
 	public Ladder getLadder() {
@@ -106,6 +136,9 @@ public class Cell {
 
 	public void setLadder(Ladder ladder) {
 		this.ladder = ladder;
+		if (run == 0) {			
+			lb.setText(toString());
+		}
 	}
 
 	public Boolean hasElement(){
@@ -126,7 +159,21 @@ public class Cell {
 			element=ladder.toString();
 		}
 		//return ("("+row+","+col+")");
-		return " ["+element+"  "+players+"] ";
+		if (run == 0) {			
+			return val + " " + element + " " + players;
+		} else {
+			return " ["+element+"  "+players+"] ";
+		}
+	}
+	
+	public String getElement() {
+		String element="";
+		if (snake!=null){
+			element=snake.toString();
+		}else if (ladder!=null){
+			element=ladder.toString();
+		}
+		return element;
 	}
 
 
@@ -138,7 +185,7 @@ public class Cell {
 		}else if (ladder!=null){
 			element=ladder.toString();
 		}
-		return (" ["+val+" "+element+"] ");
+		return (" ["+val+""+element+"] ");
 	}
 
 

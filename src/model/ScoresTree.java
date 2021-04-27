@@ -56,13 +56,17 @@ public class ScoresTree {
 		if (line == null) {
 			// DO nothing
 		} else {
-			String [] parts = line.split(",");
-			Player pl = new Player(parts[1]);
-			pl.setNickName(parts[0]);
-			pl.setMoves(Integer.parseInt(parts[2]));
-			pl.setScore(Integer.parseInt(parts[3]));
-			addScore(pl);
-			loadScores(br.readLine(), br);
+			try {				
+				String [] parts = line.split(",");
+				Player pl = new Player(parts[1]);
+				pl.setNickName(parts[0]);
+				pl.setMoves(Integer.parseInt(parts[2]));
+				pl.setScore(Integer.parseInt(parts[3]));
+				addScore(pl);
+				loadScores(br.readLine(), br);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// Do nothing
+			}			
 		}
 	}
 	
@@ -77,8 +81,13 @@ public class ScoresTree {
 		if (current == null) {
 			return "";
 		} else {
+			
 			return inOrder(current.getLeft()) + "\n" + current.toString() +"\n" + inOrder(current.getRight());
 		}
+	}
+	
+	public Player returnNode(Player pl) {
+		return pl;
 	}
 	// Tendría que imprimirlos en Inorden, si no estoy mal.
 	// Puesto que, Inorden: Izquierda, Raíz, Derecha

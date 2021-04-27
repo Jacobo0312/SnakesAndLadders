@@ -87,7 +87,7 @@ public class Player {
 	
 	@Override
 	public String toString() {
-		String details = "Nickname: " + nickName + "\nToken: " + token + "\nScore: " + score;
+		String details = "Jugador: " + nickName + " Token: " + token + " Puntaje: " + score;
 		return details;
 	}
 

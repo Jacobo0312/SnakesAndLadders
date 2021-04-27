@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import javafx.scene.layout.GridPane;
 
 public class GameTable {
 
@@ -20,10 +20,12 @@ public class GameTable {
     private PlayerList playerList;
     private boolean playerWon;
     private ScoresTree scores;
+    private int run;
 
     // Characters and its getters and setters
 
-    public GameTable(int n, int m, String players, int ladders, int snakes) {
+    public GameTable(int n, int m, String players, int ladders, int snakes, int run) {
+    	this.run = run;
         this.rows = n;
         this.cols = m;
         this.val = (n * m);
@@ -34,7 +36,6 @@ public class GameTable {
         this.snakes = snakes;
         scores = new ScoresTree();
         startGame(players);
-
     }
 
     public String move() {
@@ -93,7 +94,6 @@ public class GameTable {
 
     private int moveElement(Cell cell){
         int position;
-
 
         if (cell.getLadder()!=null){
             position=cell.getLadder().getEndPos();
@@ -185,7 +185,10 @@ public class GameTable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        first = new Cell(0, 0);
+        first = new Cell(0, 0, run);
+        if (run == 0) {        	
+        	GridPane.setConstraints(first.getLabel(), 0, 0);
+        }
         // System.out.println("Se creo first");
         createRow(0, 0, first);
         assignPlayers(numPlayers, players/* ,firstPlayer */);
@@ -195,8 +198,8 @@ public class GameTable {
         addVal(firstCell, 1);
         // val = rows * cols;
         setupGame(players);
-
     }
+
 
     // Return first cell (ROWS,0)
     private Cell firstCell(Cell cell) {
@@ -220,7 +223,10 @@ public class GameTable {
         // System.out.println("Create row con la fila: "+i);
         createCol(i, j + 1, cell, cell.getUp());
         if (i + 1 < rows) {
-            Cell current = new Cell(i + 1, j);
+            Cell current = new Cell(i + 1, j, run);
+            if (run == 0) {            	
+            	GridPane.setConstraints(current.getLabel(), j, i + 1);
+            }
             current.setUp(cell);
             cell.setDown(current);
             createRow(i + 1, j, current);
@@ -230,7 +236,10 @@ public class GameTable {
     private void createCol(int i, int j, Cell cell, Cell prevRow) {
         if (j < cols) {
             // System.out.println("En create col con la columna: "+j);
-            Cell current = new Cell(i, j);
+            Cell current = new Cell(i, j, run);
+            if (run == 0) {            	
+            	GridPane.setConstraints(current.getLabel(), j, i);
+            }
             current.setPrev(cell);
             cell.setNext(current);
 
@@ -312,7 +321,7 @@ public class GameTable {
 
     // -------------------------------------------------------
 
-    private void addVal(Cell cell, int valCell) {
+    public void addVal(Cell cell, int valCell) {
         // System.out.println(cell.getRow()+" "+cell.getCol());
         cell.setVal(valCell);
         // System.out.println(toString());
@@ -372,7 +381,7 @@ public class GameTable {
     private void addSnakes(int letter) {
         // Math.floor(Math.random()*(N-M+1)+M); // Value between M and N include both
         int init = (int) Math.floor(Math.random() * ((val - rows) - 2 + 1) + 2);
-        int end = (int) Math.floor(Math.random() * ((val-1) - (init + cols) + 1) + (init + cols));
+        int end = (int) Math.floor(Math.random() * ((val-2) - (init + cols) + 1) + (init + cols));
 
         Cell cellInit = searchCell(init, first);
         Cell cellEnd = searchCell(end, first);
@@ -416,6 +425,26 @@ public class GameTable {
         }
 
     }
+    
+    public void setNum(int val) {
+		if (val < 1) {
+			
+		} else {
+			Cell cell  = searchCell(val, first);
+			cell.setLabel(cell.getVal() + " " + cell.getElement());
+			setNum(val - 1);
+		}
+	}
+    
+    public void restoreNum(int val) {
+    	if (val < 1) {
+			
+		} else {
+			Cell cell  = searchCell(val, first);
+			cell.setLabel(cell.toString());
+			restoreNum(val - 1);
+		}
+    }
 
     // Roll dices
 
@@ -434,4 +463,16 @@ public class GameTable {
     	return turn;
     }
 
+    public int getVal() {
+    	return val;
+    }
+    
+    public int getRows() {
+    	return rows;
+    }
+    
+    public int getCols() {
+    	return cols;
+    }
+    
 }

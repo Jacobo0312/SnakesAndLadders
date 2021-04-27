@@ -1,22 +1,24 @@
-
-package ui;
+package cli;
 
 import java.io.IOException;
 import java.util.Scanner;
-
 import model.GameTable;
 
 public class Main {
 	
     private Scanner sc;
+    private int run;
     private GameTable game;
+  
 
     public Main() {
+    	run = 1;
         sc = new Scanner(System.in);
-        game = new GameTable(2, 2, "", 0, 0);
+        game = new GameTable(2, 2, "", 0, 0, run);
     }
 
     public static void main(String[] args) throws Exception {
+    	
         System.out.println("******** Starting  *********");
         Main game = new Main();
 
@@ -40,7 +42,7 @@ public class Main {
             break;
         case 2:
             System.out.println(game.returnScores());
-            System.out.println("--------------------------");
+            System.out.println("--------------------------");   
             System.out.println(game.returnClassScores());
             break;
 
@@ -73,7 +75,7 @@ public class Main {
         String players = parts[4];
         
             if (verifySize( rows, cols, snakes, ladders)){
-                game = new GameTable(rows, cols, players,ladders,snakes);
+                game = new GameTable(rows, cols, players,ladders,snakes, run);
                 System.out.println("JUGADORES:\n" + game.getPlayerList().toString());
                 System.out.println(game.toString2());
                 System.out.println(game);
@@ -151,6 +153,4 @@ public class Main {
 		}
         
     }
-
-
 }

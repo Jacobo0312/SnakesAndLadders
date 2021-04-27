@@ -4,7 +4,12 @@
 
 
 
-This project is a Snake and Ladders game, it was developed for console line interfaces based on a linked matrix.
+This project is a Snake and Ladders game, it was developed for console line interfaces and graphical user interface based on a linked matrix.
+
+### Note
+
+- To run as console line interfaces run with the cli folder.
+- To run as graphical user interface run with the gui folder.
 
 Snakes and Ladders is an ancient Indian board game, currently considered a worldwide classic. It is played between two or more people on a numbered board divided into squares, which also has a certain number of snakes and ladders that connect, each one, the ladders help you to gain positions and with the snakes you lose positions, The movement is determined by a rotating dice whose values are between 1 and 6.
 
@@ -17,6 +22,7 @@ When start game has three options:
 - "menu" for exit match
 - "simul" for simulator game 
 - "num" show initial table game
+
   
 
   ### [Link to documentation](https://github.com/Jacobo0312/CLI-SnakesAndLadders/blob/main/docs/T2.pdf "PDF")
